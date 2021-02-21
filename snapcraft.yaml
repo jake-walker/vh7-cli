@@ -10,7 +10,7 @@ parts:
   vh7-cli:
     plugin: nodejs
     source: .
-    nodejs-version: 12.19.0
+    nodejs-version: 14.15.5
 apps:
   vh7-cli:
     command: bin/vh7
