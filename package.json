@@ -27,7 +27,7 @@
   },
   "scripts": {
     "build": "tsc -p .",
-    "release": "pkg dist/index.js --out-path dist --public",
+    "release": "pkg dist/index.js --out-path dist/binaries --public",
     "lint": "eslint . --ext .ts"
   },
   "preferGlobal": true
