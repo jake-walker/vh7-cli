@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Command } from 'commander';
 import signale from 'signale';
 import prompts from 'prompts';

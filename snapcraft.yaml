@@ -1,0 +1,18 @@
+name: vh7-cli
+version: git
+summary: Command-line URL shortener utility.
+description: |
+  A command-line utility for interacting with the VH7 URL shortener.
+    $ vh7
+confinement: devmode
+base: core18
+parts:
+  vh7-cli:
+    plugin: nodejs
+    source: .
+    nodejs-version: 12.19.0
+apps:
+  vh7-cli:
+    command: bin/vh7
+    plugs:
+      - network
