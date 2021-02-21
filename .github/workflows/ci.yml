@@ -36,3 +36,25 @@ jobs:
         with:
           name: binaries
           path: dist/binaries/
+  tag-new-version:
+    runs-on: ubuntu-latest
+    outputs:
+      current-version: ${{ steps.detect-and-tag-version.outputs.current-version }}
+      tag: ${{ steps.detect-and-tag-version.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: Detect and Tag New Version
+        id: detect-and-tag-version
+        uses: salsify/action-detect-and-tag-new-version@v2
+  release:
+    needs:
+      - build
+      - tag-new-version
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.tag-new-version.outputs.tag }}
+    steps:
+      - name: Test
+        run: echo 'Release!'
