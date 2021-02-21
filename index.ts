@@ -2,11 +2,12 @@ import { Command } from 'commander';
 import signale from 'signale';
 import prompts from 'prompts';
 import clipboardy from 'clipboardy';
+import version from 'project-version';
 import vh7 from './vh7';
 
 const program = new Command();
 
-program.version('1.0.0');
+program.version(version);
 
 program.command('shorten <url>')
   .description('Shorten a given URL')

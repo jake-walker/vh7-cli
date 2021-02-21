@@ -54,7 +54,53 @@ jobs:
       - build
       - tag-new-version
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.tag-new-version.outputs.tag }}
+    #if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.tag-new-version.outputs.tag }}
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
     steps:
-      - name: Test
-        run: echo 'Release!'
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: binaries
+          path: dist/binaries/
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ needs.tag-new-version.outputs.tag }}
+          release_name: Release ${{ needs.tag-new-version.outputs.current-version }}
+          draft: false
+          prerelease: false
+      - name: Upload Windows Binary
+        id: upload-asset-windows
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: dist/binaries/vh7cli-win.exe
+          asset_name: vh7cli-${{ needs.tag-new-version.outputs.current-version }}-windows.exe
+          asset_content_type: application/x-msdownload
+      - name: Upload Linux Binary
+        id: upload-asset-linux
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: dist/binaries/vh7cli-linux
+          asset_name: vh7cli-${{ needs.tag-new-version.outputs.current-version }}-linux
+          asset_content_type: application/x-executable
+      - name: Upload MacOS Binary
+        id: upload-asset-macos
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: dist/binaries/vh7cli-macos
+          asset_name: vh7cli-${{ needs.tag-new-version.outputs.current-version }}-macos
+          asset_content_type: application/x-executable
