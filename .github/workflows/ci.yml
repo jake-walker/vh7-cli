@@ -36,21 +36,6 @@ jobs:
         with:
           name: binaries
           path: dist/binaries/
-      - name: Build snap
-        id: snapcraft-build
-        uses: snapcore/action-build@v1
-      - name: Upload snap artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: snap
-          path: ${{ steps.snapcraft-build.outputs.snap }}
-      - name: Publish snap
-        if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
-        uses: snapcore/action-publish@v1
-        with:
-          store_login: ${{ secrets.SNAPCRAFT_LOGIN }}
-          snap: ${{ steps.snapcraft-build.outputs.snap }}
-          release: edge
   tag-new-version:
     runs-on: ubuntu-latest
     outputs:
@@ -64,24 +49,6 @@ jobs:
       - name: Detect and Tag New Version
         id: detect-and-tag-version
         uses: salsify/action-detect-and-tag-new-version@v2
-  release-snapcraft:
-    needs:
-      - build
-      - tag-new-version
-    runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build
-        id: snapcraft-build
-        uses: snapcore/action-build@v1
-      - name: Publish
-        uses: snapcore/action-publish@v1
-        with:
-          store_login: ${{ secrets.SNAPCRAFT_LOGIN }}
-          snap: ${{ steps.snapcraft-build.outputs.snap }}
-          release: stable
   release-github:
     needs:
       - build
