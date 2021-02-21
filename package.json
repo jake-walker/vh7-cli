@@ -1,6 +1,6 @@
 {
   "name": "vh7-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Command line interface for VH7",
   "main": "index.ts",
   "repository": "https://github.com/jake-walker/vh7-cli",
