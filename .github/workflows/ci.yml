@@ -38,7 +38,7 @@ jobs:
           path: dist/binaries/
       - name: Build snap
         id: snapcraft-build
-        uses: actions/action-build@v1
+        uses: snapcore/action-build@v1
       - name: Upload snap artifact
         uses: snapcore/upload-artifact@v2
         with:
@@ -46,7 +46,7 @@ jobs:
           path: ${{ steps.snapcraft-build.outputs.snap }}
       - name: Publish snap
         if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
-        uses: snapcore/action-publish@v1
+        uses: actions/action-publish@v1
         with:
           store_login: ${{ secrets.SNAPCRAFT_LOGIN }}
           snap: ${{ steps.snapcraft-build.outputs.snap }}
