@@ -35,6 +35,10 @@ func prettyDate(date vh7.UtcTime) string {
 	return time.Time(date).Format("2 Jan 2006")
 }
 
+func prettyTime(date time.Time) string {
+	return date.Format("2 Jan 2006 15:04")
+}
+
 func fileExists(filename string) bool {
 	info, err := os.Stat(filename)
 	if os.IsNotExist(err) {

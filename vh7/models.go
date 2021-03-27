@@ -10,6 +10,32 @@ type Response struct {
 	Expiry  UtcTime `json:"expiry"`
 }
 
+func (r *Response) GetType() string {
+	if (r.Url != Url{}) {
+		return "url"
+	} else if (r.Paste != Paste{}) {
+		return "paste"
+	} else if (r.Upload != Upload{}) {
+		return "upload"
+	} else {
+		return ""
+	}
+}
+
+func (r *Response) GetSummary() string {
+	responseType := r.GetType()
+
+	if responseType == "url" {
+		return r.Url.Url
+	} else if responseType == "paste" {
+		return r.Paste.Language + " code"
+	} else if responseType == "upload" {
+		return r.Upload.OriginalFilename
+	} else {
+		return "Unknown"
+	}
+}
+
 type Url struct {
 	Url string `json:"url"`
 }

@@ -41,6 +41,7 @@ func actionShorten(args []string, options map[string]string) int {
 	spinner.Success("Shortened!")
 	pterm.Success.Println("Your URL has been shortened to:\n" +
 		fullUrl(shorten.Link))
+	saveToHistory(*shorten)
 	return 0
 }
 
@@ -106,6 +107,7 @@ func actionPaste(args []string, options map[string]string) int {
 	spinner.Success("Pasted!")
 	pterm.Success.Println("Your paste has been shortened to:\n" +
 		fullUrl(paste.Link))
+	saveToHistory(*paste)
 	return 0
 }
 
@@ -137,6 +139,7 @@ func actionUpload(args []string, options map[string]string) int {
 	pterm.Success.Println("Your upload has been been created!\n" +
 		"It will expire on " + prettyDate(upload.Expiry) + "\n" +
 		fullUrl(upload.Link))
+	saveToHistory(*upload)
 	return 0
 }
 
@@ -162,14 +165,16 @@ func actionInfo(args []string, options map[string]string) int {
 		"Updated:  %v\n"+
 		"Expires:  %v", prettyDate(info.Created), prettyDate(info.Updated), prettyDate(info.Expiry))
 
-	if (info.Url != vh7.Url{}) {
+	infoType := info.GetType()
+
+	if infoType == "url" {
 		pterm.Info.Println(fmt.Sprintf("Type:     Short URL\n"+
 			"URL:      %v\n", info.Url.Url) + metadata)
-	} else if (info.Paste != vh7.Paste{}) {
+	} else if infoType == "paste" {
 		pterm.Info.Println(fmt.Sprintf("Type:     Paste\n"+
 			"Language: %v\n"+
 			"Hash:     %v\n", info.Paste.Language, info.Paste.Hash) + metadata)
-	} else if (info.Upload != vh7.Upload{}) {
+	} else if infoType == "upload" {
 		pterm.Info.Println(fmt.Sprintf("Type:     Upload\n"+
 			"Filename: %v\n"+
 			"Mimetype: %v\n"+
@@ -177,6 +182,27 @@ func actionInfo(args []string, options map[string]string) int {
 	} else {
 		pterm.Error.Println("This link is an unknown type!")
 	}
+
+	return 0
+}
+
+func actionHistory(args []string, options map[string]string) int {
+	history := loadHistory()
+	tableData := pterm.TableData{
+		{"Date", "Link", "Type", "Summary"},
+	}
+
+	for i := len(history) - 1; i >= 0; i-- {
+		item := history[i]
+		tableData = append(tableData, []string{
+			prettyTime(item.Date),
+			fullUrl(item.Data.Link),
+			item.Data.GetType(),
+			item.Data.GetSummary(),
+		})
+	}
+
+	pterm.DefaultTable.WithHasHeader().WithData(tableData).Render()
 
 	return 0
 }
@@ -203,13 +229,17 @@ func main() {
 		WithArg(cli.NewArg("link", "the link to get info about")).
 		WithAction(actionInfo)
 
+	history := cli.NewCommand("history", "get history of created short links").
+		WithAction(actionHistory)
+
 	app := cli.New("VH7 URL shortener, pastebin and temporary file storage.\n" +
 		fmt.Sprintf("    Version: %v", BuildVersion)).
 		// WithOption(cli.NewOption("silent", "silent execution (just the output)").WithType(cli.TypeBool)).
 		WithCommand(shorten).
 		WithCommand(paste).
 		WithCommand(upload).
-		WithCommand(info)
+		WithCommand(info).
+		WithCommand(history)
 
 	os.Exit(app.Run(os.Args, os.Stdout))
 }
