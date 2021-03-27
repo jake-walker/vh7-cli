@@ -48,6 +48,7 @@ jobs:
       - tag-new-version
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: linux
@@ -77,3 +78,4 @@ jobs:
           goos: ${{ matrix.os }}
           goarch: ${{ matrix.arch }}
           extra_files: LICENSE README.md
+          release_tag: ${{ needs.tag-new-version.outputs.tag }}
