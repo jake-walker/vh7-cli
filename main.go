@@ -60,7 +60,7 @@ func actionPaste(args []string, options map[string]string) int {
 	} else {
 		pasteType = "file"
 
-		if _, err := os.Stat(args[0]); os.IsNotExist(err) {
+		if !fileExists(args[0]) {
 			pterm.Error.Printf("Cannot open file %v!", args[0])
 			return 1
 		}
@@ -110,7 +110,7 @@ func actionPaste(args []string, options map[string]string) int {
 }
 
 func actionUpload(args []string, options map[string]string) int {
-	if _, err := os.Stat(args[0]); os.IsNotExist(err) {
+	if !fileExists(args[0]) {
 		pterm.Error.Printf("Cannot open file %v!", args[0])
 		return 1
 	}

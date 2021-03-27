@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/url"
+	"os"
 	"path"
 	"strings"
 	"time"
@@ -32,4 +33,12 @@ func prettyDate(date vh7.UtcTime) string {
 		return "never"
 	}
 	return time.Time(date).Format("2 Jan 2006")
+}
+
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }
