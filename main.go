@@ -14,7 +14,7 @@ import (
 	"golang.org/x/tools/godoc/util"
 )
 
-const apiUrl string = "http://localhost:8000/"
+const apiUrl string = "https://vh7.uk/"
 const defaultPasteLanguage string = "plaintext"
 
 func getApi() *vh7.ApiService {
