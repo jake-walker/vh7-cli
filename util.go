@@ -23,7 +23,7 @@ func fullUrl(link string) string {
 
 func cleanLink(link string) string {
 	link = strings.Replace(link, apiUrl, "", 1)
-	link = strings.Replace(link, "/", "", -1)
+	link = strings.ReplaceAll(link, "/", "")
 	return link
 }
 
