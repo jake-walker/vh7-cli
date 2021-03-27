@@ -19,9 +19,9 @@ func (s *ApiService) CreateShorten(url string) (*Response, error) {
 	return urlResponse, err
 }
 
-func (s *ApiService) CreatePaste(code string, langauge string) (*Response, error) {
+func (s *ApiService) CreatePaste(code string, language string) (*Response, error) {
 	data := &Paste{
-		Language: langauge,
+		Language: language,
 		Code:     code,
 	}
 
