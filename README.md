@@ -1,5 +1,7 @@
 # VH7 CLI
 
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/jake-walker/vh7-cli/CI/master) [![DeepSource](https://deepsource.io/gh/jake-walker/vh7-cli.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/jake-walker/vh7-cli/?ref=repository-badge) ![GitHub](https://img.shields.io/github/license/jake-walker/vh7-cli)
+
 A work-in-progress command line interface app for VH7.
 
 <!-- TOC -->
