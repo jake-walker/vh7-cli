@@ -47,7 +47,6 @@ jobs:
       - build
       - tag-new-version
     runs-on: ubuntu-20.04
-    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
@@ -81,3 +80,36 @@ jobs:
           extra_files: LICENSE README.md
           release_tag: ${{ needs.tag-new-version.outputs.tag }}
           goversion: https://golang.org/dl/go1.16.2.linux-amd64.tar.gz
+  release-snap:
+    needs:
+      - build
+      - tag-new-version
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - i386
+          - amd64
+          - arm64
+          - armhf
+          - ppc64el
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.tag-new-version.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          image: tonistiigi/binfmt@sha256:df15403e06a03c2f461c1f7938b171fda34a5849eb63a70e2a2109ed5a778bde
+      - name: Build Snap
+        uses: diddlesnaps/snapcraft-multiarch-action@v1
+        id: snapcraft-build
+        with:
+          architecture: ${{ matrix.platform }}
+      - name: Publish Snap
+        uses: snapcore/action-publish@v1
+        with:
+          store_login: ${{ secrets.SNAPCRAFT_LOGIN }}
+          snap: ${{ steps.snapcraft-build.outputs.snap }}
+          release: stable
