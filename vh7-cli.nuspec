@@ -48,8 +48,8 @@ This is a nuspec. It mostly adheres to https://docs.nuget.org/create/Nuspec-Refe
     <!--<mailingListUrl></mailingListUrl>-->
     <!--<bugTrackerUrl></bugTrackerUrl>-->
     <tags>vh7-cli</tags>
-    <summary>VH7 URL shortener, pastebin and temporary file storage.</summary>
-    <description>VH7 URL shortener, pastebin and temporary file storage.</description>
+    <summary>A command-line interface for VH7.</summary>
+    <description>A lovely command-line interface made for VH7. VH7 command-line allows you to quickly create short links, share your code and share files without leaving your terminal.</description>
     <!-- <releaseNotes>__REPLACE_OR_REMOVE__MarkDown_Okay</releaseNotes> -->
     <!-- =============================== -->
 
