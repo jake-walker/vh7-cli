@@ -18,6 +18,7 @@ jobs:
         run: go test -v ./...
   tag-new-version:
     runs-on: ubuntu-20.04
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     outputs:
       current-version: ${{ steps.detect-and-tag-version.outputs.current-version }}
       tag: ${{ steps.detect-and-tag-version.outputs.tag }}
@@ -31,85 +32,3 @@ jobs:
         uses: salsify/action-detect-and-tag-new-version@v2
         with:
           version-command: "grep BuildVersion version.go | cut -d'=' -f 2 | tr -d '\"' | xargs"
-      - name: Create Release
-        id: create-release
-        uses: actions/create-release@v1
-        if: ${{ steps.detect-and-tag-version.outputs.tag }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.detect-and-tag-version.outputs.tag }}
-          release_name: Release ${{ steps.detect-and-tag-version.outputs.current-version }}
-          draft: false
-          prerelease: false
-  release:
-    needs:
-      - build
-      - tag-new-version
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: linux
-            arch: amd64
-          - os: linux
-            arch: arm64
-          - os: linux
-            arch: "386"
-          - os: windows
-            arch: "386"
-          - os: windows
-            arch: amd64
-          - os: windows
-            arch: arm
-          - os: darwin
-            arch: amd64
-          - os: darwin
-            arch: arm64
-    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.tag-new-version.outputs.tag }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Release
-        uses: wangyoucao577/go-release-action@v1.15
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          goos: ${{ matrix.os }}
-          goarch: ${{ matrix.arch }}
-          extra_files: LICENSE README.md
-          release_tag: ${{ needs.tag-new-version.outputs.tag }}
-          goversion: https://golang.org/dl/go1.16.2.linux-amd64.tar.gz
-  release-snap:
-    needs:
-      - build
-      - tag-new-version
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - i386
-          - amd64
-          - arm64
-          - armhf
-          - ppc64el
-    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.tag-new-version.outputs.tag }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v1
-        with:
-          image: tonistiigi/binfmt@sha256:df15403e06a03c2f461c1f7938b171fda34a5849eb63a70e2a2109ed5a778bde
-      - name: Build Snap
-        uses: diddlesnaps/snapcraft-multiarch-action@v1
-        id: snapcraft-build
-        with:
-          architecture: ${{ matrix.platform }}
-      - name: Publish Snap
-        uses: snapcore/action-publish@v1
-        with:
-          store_login: ${{ secrets.SNAPCRAFT_LOGIN }}
-          snap: ${{ steps.snapcraft-build.outputs.snap }}
-          release: stable

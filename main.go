@@ -233,7 +233,7 @@ func main() {
 	// 	WithAction(actionHistory)
 
 	app := cli.New("VH7 URL shortener, pastebin and temporary file storage.\n" +
-		fmt.Sprintf("    Version: %v", BuildVersion)).
+		fmt.Sprintf("    Version: %s, Commit: %s, Built at: %s.", BuildVersion, commit, date)).
 		// WithOption(cli.NewOption("silent", "silent execution (just the output)").WithType(cli.TypeBool)).
 		WithCommand(shorten).
 		WithCommand(paste).
