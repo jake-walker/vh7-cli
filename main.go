@@ -41,7 +41,7 @@ func actionShorten(args []string, options map[string]string) int {
 	spinner.Success("Shortened!")
 	pterm.Success.Println("Your URL has been shortened to:\n" +
 		fullUrl(shorten.Link))
-	// saveToHistory(*shorten)
+	saveToHistory(*shorten)
 	return 0
 }
 
@@ -107,7 +107,7 @@ func actionPaste(args []string, options map[string]string) int {
 	spinner.Success("Pasted!")
 	pterm.Success.Println("Your paste has been shortened to:\n" +
 		fullUrl(paste.Link))
-	// saveToHistory(*paste)
+	saveToHistory(*paste)
 	return 0
 }
 
@@ -139,7 +139,7 @@ func actionUpload(args []string, options map[string]string) int {
 	pterm.Success.Println("Your upload has been been created!\n" +
 		"It will expire on " + prettyDate(upload.Expiry) + "\n" +
 		fullUrl(upload.Link))
-	// saveToHistory(*upload)
+	saveToHistory(*upload)
 	return 0
 }
 
@@ -229,8 +229,8 @@ func main() {
 		WithArg(cli.NewArg("link", "the link to get info about")).
 		WithAction(actionInfo)
 
-	// history := cli.NewCommand("history", "get history of created short links").
-	// 	WithAction(actionHistory)
+	history := cli.NewCommand("history", "get history of created short links").
+		WithAction(actionHistory)
 
 	app := cli.New("VH7 URL shortener, pastebin and temporary file storage.\n" +
 		fmt.Sprintf("    Version: %s, Commit: %s, Built at: %s.", BuildVersion, commit, date)).
@@ -238,8 +238,8 @@ func main() {
 		WithCommand(shorten).
 		WithCommand(paste).
 		WithCommand(upload).
-		WithCommand(info) // .
-		// WithCommand(history)
+		WithCommand(info).
+		WithCommand(history)
 
 	os.Exit(app.Run(os.Args, os.Stdout))
 }
