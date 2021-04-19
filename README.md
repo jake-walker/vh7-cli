@@ -8,7 +8,8 @@ A work-in-progress command line interface app for VH7.
 
 - [Overview](#overview)
 - [Installation](#installation)
-    - [Linux (using Snap, recommended)](#linux-using-snap-recommended)
+    - [Windows (using Chocolatey, recommended)](#windows-using-chocolatey-recommended)
+    - [Linux (using install script, recommended)](#linux-using-install-script-recommended)
     - [Pre-built binaries](#pre-built-binaries)
     - [Using Go](#using-go)
 - [Contributing](#contributing)
@@ -26,25 +27,33 @@ A lovely command-line interface made for VH7. VH7 command-line allows you to qui
 
 ## Installation
 
-There are many different ways that VH7 is distributed, Chocolatey and Snap are the preferred ways of installation as they provide easy updating, whereas if you use one of the binaries you will need to update manually.
+There are many different ways that VH7 is distributed, Chocolatey is the preferred ways of installation as it provides easy updating, whereas if you use one of the binaries you will need to update manually.
 
-### Linux (using Snap, recommended)
+### Windows (using Chocolatey, recommended)
 
-The best way for installing VH7 CLI on Linux is by using [Snap](https://snapcraft.io/). Firstly, install Snap, if you haven't already, by checking the documentation [here](https://snapcraft.io/docs/installing-snapd) (it is pre-installed by default on some popular distributions like Ubuntu). Now, you can install the CLI by running:
+The best way for insalling VH7 CLI on Windows is by using [Chocolatey](https://chocolatey.org/).
 
-```bash
-sudo snap install -y vh7-cli
+_Please note Chocolatey packages are only published on minor versions, not patches._
+
+Firstly, install Chocolatey, if you haven't already, by reading the guide [here](https://chocolatey.org/install). Now, you can install the CLI by running:
+
+```powershell
+choco install vh7-cli
 ```
 
 And upgrade using:
 
-```bash
-sudo snap refresh
+```powershell
+choco upgrade vh7-cli
 ```
+
+### Linux (using install script, recommended)
+
+_Install script coming soon..._
 
 ### Pre-built binaries
 
-If you'd rather not use Chocolatey or Snap, pre-built binaries are available on [GitHub Releases](https://github.com/jake-walker/vh7-cli/releases). These are portable and can be run through your command line without installation or administrator privileges. They are built for most popular operating systems and architectures.
+If you'd rather not use Chocolatey, pre-built binaries are available on [GitHub Releases](https://github.com/jake-walker/vh7-cli/releases). These are portable and can be run through your command line without installation or administrator privileges. They are built for most popular operating systems and architectures.
 
 ### Using Go
 

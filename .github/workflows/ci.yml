@@ -37,7 +37,7 @@ jobs:
     needs:
       - build
       - tag-new-version
-    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }} # && needs.tag-new-version.outputs.tag }}
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.tag-new-version.outputs.tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -51,7 +51,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
-          args: release --rm-dist --skip-publish
+          args: release --rm-dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload assets
@@ -65,7 +65,8 @@ jobs:
       - build
       - tag-new-version
       - goreleaser
-    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && endsWith(needs.tag-new-version.outputs.current-version, '.0') }} # && needs.tag-new-version.outputs.tag }}
+    # only run chocolatey release on a push to main when there is a new version ending in .0 - a minor version
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.tag-new-version.outputs.tag && endsWith(needs.tag-new-version.outputs.current-version, '.0') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
