@@ -16,3 +16,4 @@
 
 *.nupkg
 _TODO.txt
+dist/
