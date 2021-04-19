@@ -32,3 +32,62 @@ jobs:
         uses: salsify/action-detect-and-tag-new-version@v2
         with:
           version-command: "grep BuildVersion version.go | cut -d'=' -f 2 | tr -d '\"' | xargs"
+  goreleaser:
+    runs-on: ubuntu-20.04
+    needs:
+      - build
+      - tag-new-version
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }} # && needs.tag-new-version.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          version: latest
+          args: release --rm-dist --skip-publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload assets
+        uses: actions/upload-artifact@v2
+        with:
+          name: cli-release
+          path: dist/*
+  chocolatey:
+    runs-on: windows-2019
+    needs:
+      - build
+      - tag-new-version
+      - goreleaser
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && endsWith(needs.tag-new-version.outputs.current-version, '.0') }} # && needs.tag-new-version.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download assets
+        uses: actions/download-artifact@v2
+        with:
+          name: cli-release
+          path: ./dist
+      - name: Set variables
+        run: |
+          export CHECKSUM_32=$(cat ./dist/checksums.txt | grep Windows_i386 | cut -d' ' -f 1)
+          export CHECKSUM_64=$(cat ./dist/checksums.txt | grep Windows_x86_64 | cut -d' ' -f 1)
+          sed -i -e 's/__VERSION__/${{ needs.tag-new-version.outputs.current-version }}/g' ./chocolatey/tools/chocolateyinstall.ps1 ./chocolatey/vh7-cli.nuspec
+          sed -i -e 's/__CHECKSUM_32__/'$CHECKSUM_32'/g' ./chocolatey/tools/chocolateyinstall.ps1
+          sed -i -e 's/__CHECKSUM_64__/'$CHECKSUM_64'/g' ./chocolatey/tools/chocolateyinstall.ps1
+          cp -r chocolatey/* .
+        shell: bash
+      - name: Pack
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: pack
+      - name: Upload
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: push vh7-cli.${{ needs.tag-new-version.outputs.current-version }}.nupkg -s https://push.chocolatey.org/ -k ${{ secrets.CHOCOLATEY_KEY }}
