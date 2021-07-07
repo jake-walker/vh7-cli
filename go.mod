@@ -1,4 +1,4 @@
-module github.com/jake-walker/vh7-cli
+module github.com/quark-links/quark-cli
 
 go 1.16
 

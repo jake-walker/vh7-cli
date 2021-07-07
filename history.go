@@ -7,13 +7,13 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/jake-walker/vh7-cli/vh7"
 	"github.com/pterm/pterm"
+	quark "github.com/quark-links/quark-cli/quark"
 )
 
 type HistoryItem struct {
-	Data vh7.Response `json:"data"`
-	Date time.Time    `json:"date"`
+	Data quark.Response `json:"data"`
+	Date time.Time      `json:"date"`
 }
 
 const maxHistoryLength int = 20
@@ -24,7 +24,7 @@ func getHistoryLocation() string {
 		pterm.Fatal.Println("There was a problem fetching the config directory!", err)
 	}
 
-	appConfigDir := filepath.Join(baseConfigDir, "/vh7-cli")
+	appConfigDir := filepath.Join(baseConfigDir, "/quark-cli")
 	err = os.MkdirAll(appConfigDir, os.ModeDir)
 	if !(err == nil || os.IsExist(err)) {
 		pterm.Fatal.Println("There was a problem creating the config directory!", err)
@@ -74,7 +74,7 @@ func loadHistory() []HistoryItem {
 	return items
 }
 
-func saveToHistory(data vh7.Response) {
+func saveToHistory(data quark.Response) {
 	item := HistoryItem{
 		Date: time.Now(),
 		Data: data,

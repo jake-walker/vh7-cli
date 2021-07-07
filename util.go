@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jake-walker/vh7-cli/vh7"
 	"github.com/pterm/pterm"
+	"github.com/quark-links/quark-cli/quark"
 )
 
 func fullUrl(link string) string {
@@ -28,8 +28,8 @@ func cleanLink(link string) string {
 	return link
 }
 
-func prettyDate(date vh7.UtcTime) string {
-	if (date == vh7.UtcTime{}) {
+func prettyDate(date quark.UtcTime) string {
+	if (date == quark.UtcTime{}) {
 		return "never"
 	}
 	return time.Time(date).Format("2 Jan 2006")

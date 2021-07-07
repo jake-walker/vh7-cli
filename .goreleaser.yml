@@ -32,4 +32,4 @@ changelog:
 release:
   github:
     owner: jake-walker
-    name: vh7-cli
+    name: quark-cli

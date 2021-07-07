@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>quark-cli</id>
+    <version>__VERSION__</version>
+    <packageSourceUrl>https://github.com/quark-links/quark-cli</packageSourceUrl>
+    <owners>Jake Walker</owners>
+    <title>quark-cli (Install)</title>
+    <authors>Jake Walker</authors>
+    <projectUrl>https://github.com/quark-links/quark-cli</projectUrl>
+    <iconUrl>https://rawcdn.githack.com/quark-links/quark-app/4ab1b84e0f2af9533ea3f1737e697b36e53638c5/static/img/vh7-square.png</iconUrl>
+    <copyright>2021 Jake Walker</copyright>
+    <licenseUrl>https://github.com/quark-links/quark-cli/blob/main/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <docsUrl>https://github.com/quark-links/quark-cli/blob/main/README.md</docsUrl>
+    <bugTrackerUrl>https://github.com/quark-links/quark-cli/issues</bugTrackerUrl>
+    <tags>quark-cli</tags>
+    <summary>A command-line interface for Quark.</summary>
+    <description>A lovely command-line interface made for Quark. Quark command-line allows you to quickly create short links, share your code and share files without leaving your terminal.</description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

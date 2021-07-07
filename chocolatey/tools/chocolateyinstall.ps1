@@ -1,8 +1,8 @@
 ﻿$ErrorActionPreference = 'Stop';
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 
-$url        = 'https://github.com/jake-walker/vh7-cli/releases/download/v__VERSION__/vh7-cli_2.1.2_Windows_i386.zip' # download url, HTTPS preferred
-$url64      = 'https://github.com/jake-walker/vh7-cli/releases/download/v__VERSION__/vh7-cli_2.1.2_Windows_x86_64.zip' # 64bit URL here (HTTPS preferred) or remove - if installer contains both (very rare), use $url
+$url        = 'https://github.com/quark-links/quark-cli/releases/download/v__VERSION__/quark-cli___VERSION___Windows_i386.zip'   # download url, HTTPS preferred
+$url64      = 'https://github.com/quark-links/quark-cli/releases/download/v__VERSION__/quark-cli___VERSION___Windows_x86_64.zip' # 64bit URL here (HTTPS preferred) or remove - if installer contains both (very rare), use $url
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
@@ -11,7 +11,7 @@ $packageArgs = @{
   url           = $url
   url64bit      = $url64
 
-  softwareName  = 'vh7-cli*'
+  softwareName  = 'quark-cli*'
 
   checksum      = '__CHECKSUM_32__'
   checksumType  = 'sha256'

@@ -1,7 +1,7 @@
 ﻿$ErrorActionPreference = 'Stop';
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
-  softwareName  = 'vh7-cli*'
+  softwareName  = 'quark-cli*'
   fileType      = 'exe'
 }
 

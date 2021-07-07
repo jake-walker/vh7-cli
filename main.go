@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/atotto/clipboard"
-	"github.com/jake-walker/vh7-cli/vh7"
 	"github.com/pterm/pterm"
+	"github.com/quark-links/quark-cli/quark"
 	"github.com/teris-io/cli"
 	"golang.org/x/tools/godoc/util"
 )
@@ -17,8 +17,8 @@ import (
 const apiUrl string = "https://vh7.uk/"
 const defaultPasteLanguage string = "plaintext"
 
-func getApi() *vh7.ApiService {
-	return vh7.NewApiService(http.DefaultClient, apiUrl)
+func getApi() *quark.ApiService {
+	return quark.NewApiService(http.DefaultClient, apiUrl)
 }
 
 func actionShorten(args []string, options map[string]string) int {
@@ -232,7 +232,7 @@ func main() {
 	history := cli.NewCommand("history", "get history of created short links").
 		WithAction(actionHistory)
 
-	app := cli.New("VH7 URL shortener, pastebin and temporary file storage.\n" +
+	app := cli.New("Quark URL shortener, pastebin and temporary file storage.\n" +
 		fmt.Sprintf("    Version: %s, Commit: %s, Built at: %s.", BuildVersion, commit, date)).
 		// WithOption(cli.NewOption("silent", "silent execution (just the output)").WithType(cli.TypeBool)).
 		WithCommand(shorten).

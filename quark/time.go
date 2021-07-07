@@ -1,6 +1,6 @@
 // ISO 8601 UTC date parser
 
-package vh7
+package quark
 
 import (
 	"strings"

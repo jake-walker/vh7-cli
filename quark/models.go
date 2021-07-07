@@ -1,4 +1,4 @@
-package vh7
+package quark
 
 type Response struct {
 	Created UtcTime `json:"created"`
