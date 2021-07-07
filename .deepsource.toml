@@ -1,10 +1,13 @@
 version = 1
 
-test_patterns = ["**/*_test.go"]
-
 [[analyzers]]
 name = "go"
 enabled = true
 
   [analyzers.meta]
-  import_paths = ["github.com/jake-walker/vh7-cli"]
+  import_root = "github.com/quark-links/quark-cli"
+  dependencies_vendored = false
+
+[[analyzers]]
+name = "test-coverage"
+enabled = true
